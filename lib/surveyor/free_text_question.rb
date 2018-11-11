@@ -8,7 +8,16 @@ module Surveyor
     end
 
     def valid_answer?(answer)
-       answer.class == String
+      if answer.class == String
+        return true
+      else
+        raise ResponseError
+      end
     end
   end
+
+  ResponseError = Class.new(RuntimeError)
 end
+
+
+

@@ -12,8 +12,12 @@ RSpec.describe Surveyor::FreeTextQuestion do
       expect(subject.valid_answer?('Hello World')).to eq(true)
     end
 
-    it 'is invalid when it is not a String' do
-      expect(subject.valid_answer?(1)).to eq(false)
+    context "when the answer is invalid" do
+      let(:answer) { nil }
+  
+      it "will raise an exception" do
+        expect { subject.valid_answer?(answer) }.to raise_error(Surveyor::ResponseError)
+      end
     end
   end
 end

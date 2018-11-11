@@ -12,12 +12,4 @@ RSpec.describe Surveyor::Response do
     subject.add_answer(answer)
     expect(subject.answers).to include(answer)
   end
-
-  context "when the answer is invalid" do
-    let(:answer) { nil }
-
-    it "will raise an exception" do
-      expect { subject.valid_answer?(answer) }.to raise_error(ResponseError)
-    end
-  end
 end

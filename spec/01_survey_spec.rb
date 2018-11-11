@@ -66,8 +66,41 @@ RSpec.describe Surveyor::Survey do
 
     context "when the user has not responded" do
       it "will return false" do
-        expect(subject.has_responded_yet?('anemail@thatdoesntexist.com')).to eq (false)
+        expect(subject.has_responded_yet?('anemail@thatdoesntexist.com')).to eq(false)
       end
     end
   end
+
+  describe "#get_answer_for_rating_question" do
+    let(:rating_question1) { Surveyor::RatingQuestion.new(title: 'Are you happy with your work enviroment?' )}
+
+    let(:response1) { Surveyor::Response.new(email: 'nhung@nhunghoang.com' )}
+
+    let(:answer1) { Surveyor::Answer.new(question: rating_question1, value: 1 )}
+    let(:answer2) { Surveyor::Answer.new(question: rating_question1, value: 2 )}
+    let(:answer3) { Surveyor::Answer.new(question: rating_question1, value: 2 )}
+    let(:answer4) { Surveyor::Answer.new(question: rating_question1, value: 4 )}
+
+    before {
+      subject.add_question(rating_question1)
+      subject.add_response(response1)
+      response1.add_answer(answer1)
+      response1.add_answer(answer2)
+      response1.add_answer(answer3)
+      response1.add_answer(answer4)
+    }
+
+    context "when there is a particular rating question" do
+      it "will show the number of each answer for that rating question" do
+        expect(subject.get_answer_for_rating_question(rating_question1)).to eq(
+          { 1 => 1,
+            2 => 2,
+            3 => 0,
+            4 => 1,
+            5 => 0
+          }
+        )
+      end
+    end
+  end 
 end
